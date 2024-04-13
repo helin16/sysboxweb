@@ -4,7 +4,7 @@ import AppLogo from "./AppLogo";
 const PageFooter = () => {
   return (
     <div className="p-3 mt-24">
-      <div className={"container lg:flex mx-auto justify-stretch"}>
+      <div className={"container lg:gap-8 lg:flex mx-auto justify-stretch"}>
         <div className={"lg:w-3/12 py-5 lg:px-3"}>
           <Link href="/">
             <span className="sr-only">{process.env.APP_NAME || ""}</span>
@@ -59,6 +59,7 @@ const PageFooter = () => {
           </div>
         </div>
         <div className={"lg:w-4/12 py-10 lg:px-3"}>
+          <h5>Systems</h5>
           {[
             {
               title: "MERP – A web-base ERP system",
@@ -84,6 +85,7 @@ const PageFooter = () => {
         </div>
         <div className={"lg:w-5/12 py-10 lg:px-3"}></div>
       </div>
+      <div className="text-center">© Copyright Sysbox Pty Ltd</div>
     </div>
   );
 };

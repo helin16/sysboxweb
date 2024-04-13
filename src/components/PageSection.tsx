@@ -15,7 +15,7 @@ const PageSection = ({
 }: iPageSection) => {
   return (
     <div id={id} className={className} style={style}>
-      <div className={`${innerClassName || ""} mx-auto container px-3`}>
+      <div className={`mx-auto container ${innerClassName || ""}`}>
         {children}
       </div>
     </div>

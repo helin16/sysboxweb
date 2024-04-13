@@ -140,7 +140,7 @@ const HomePage = ({ data }: { data: any }) => {
               alt: "Artchain Global",
             },
             {
-              src: "/images/Snugglepotts.png",
+              src: "/images/snugglepotts.png",
               url: "https://snugglepotts.com.au",
               alt: "Snugglepotts ELC",
             },
