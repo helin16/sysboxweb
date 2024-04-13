@@ -59,7 +59,7 @@ const PageFooter = () => {
           </div>
         </div>
         <div className={"lg:w-4/12 py-10 lg:px-3"}>
-          <h5>Systems</h5>
+          <h5 className="text-xl font-semibold mb-4">Our Work</h5>
           {[
             {
               title: "MERP – A web-base ERP system",
@@ -83,7 +83,9 @@ const PageFooter = () => {
             );
           })}
         </div>
-        <div className={"lg:w-5/12 py-10 lg:px-3"}></div>
+        <div className={"lg:w-5/12 py-10 lg:px-3"}>
+          <h5 className="text-xl font-semibold mb-4">Latest News</h5>
+        </div>
       </div>
       <div className="text-center">© Copyright Sysbox Pty Ltd</div>
     </div>

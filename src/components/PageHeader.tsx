@@ -96,31 +96,35 @@ export default function PageHeader({
       return null;
     }
     return (
-      <div>
-        <div className={"absolute w-full left-0 top-0 z-50 bg-white p-6"}>
-          <div className={"flex items-center justify-between"}>
-            <AppLogo width={200} />
-            <div className="flex gap-1 items-center">
-              <div>Close</div>
-              <button onClick={() => setShowingSideMenu(!showingSideMenu)}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  className="bi bi-list h-6 w-6"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
-                </svg>
-              </button>
-            </div>
+      <div
+        className={"bg-white absolute w-full left-0 top-0 p-6 opacity-100"}
+        style={{
+          boxShadow: "0 4px 6px rgba(33,51,67,.12)",
+          borderBottom: "1px solid rgba(33,51,67,.35)",
+        }}
+      >
+        <div className={"flex items-center justify-between"}>
+          <AppLogo width={200} />
+          <div className="flex gap-1 items-center">
+            <div>Close</div>
+            <button onClick={() => setShowingSideMenu(!showingSideMenu)}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                className="bi bi-list h-6 w-6"
+                viewBox="0 0 16 16"
+              >
+                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+              </svg>
+            </button>
           </div>
-          <div className="flex flex-col mt-8 gap-4">
-            {allMenuItems.map((menuItem) => getMenuItem(menuItem, "py-4"))}
-          </div>
+        </div>
+        <div className="flex flex-col mt-8 gap-2">
+          {allMenuItems.map((menuItem) => getMenuItem(menuItem, "py-2"))}
+        </div>
 
-          <div className="flex mt-8">
-            <ContactUsBtn />
-          </div>
+        <div className="flex mt-8">
+          <ContactUsBtn />
         </div>
       </div>
     );
@@ -129,7 +133,11 @@ export default function PageHeader({
   return (
     <div
       className={`${
-        isSticky === true ? "top-0 z-50" : "opacity-60"
+        isSticky === true
+          ? "top-0 z-50"
+          : showingSideMenu === true
+          ? "z-50"
+          : "opacity-60"
       } fixed transition-all duration-300 ease-in bg-white w-full`}
     >
       <header
