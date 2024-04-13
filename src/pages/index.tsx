@@ -1,5 +1,5 @@
 "use client";
-import { GetServerSideProps } from "next";
+
 import PageLayout from "@/components/PageLayout";
 import PageHeroPanel from "@/components/PageHeroPanel";
 import ContactUsBtn from "@/components/ContactUsBtn";
@@ -15,7 +15,7 @@ import {
   PAGE_NAME_TESTIMONIALS,
 } from "@/components/PageHeader";
 
-const HomePage = ({ data }: { data: any }) => {
+const HomePage = () => {
   return (
     <PageLayout pageTitle={"Sysbox - make your ideas shine since 2017"}>
       <PageHeroPanel className="bg-[url('/images/bg-blur.png')] bg-cover bg-no-repeat bg-transparent">
@@ -222,20 +222,6 @@ const HomePage = ({ data }: { data: any }) => {
       </PageSection>
     </PageLayout>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  // Fetch data from your API or perform any server-side logic
-  const data = {
-    message: "",
-  };
-
-  // Return the data as props
-  return {
-    props: {
-      data,
-    },
-  };
 };
 
 export default HomePage;

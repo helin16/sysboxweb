@@ -1,5 +1,6 @@
 import Link from "next/link";
 import AppLogo from "./AppLogo";
+import NewsList from "./NewsList";
 
 const PageFooter = () => {
   return (
@@ -85,6 +86,7 @@ const PageFooter = () => {
         </div>
         <div className={"lg:w-5/12 py-10 lg:px-3"}>
           <h5 className="text-xl font-semibold mb-4">Latest News</h5>
+          <NewsList noOfItems={2} />
         </div>
       </div>
       <div className="text-center">© Copyright Sysbox Pty Ltd</div>

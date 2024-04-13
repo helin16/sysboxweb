@@ -62,6 +62,7 @@ export default function PageHeader({
     if (item.name === PAGE_NAME_HOME) {
       return (
         <Link
+          key={item.name}
           href={"/"}
           onClick={() => animateScroll.scrollToTop()}
           className={btnClassName}
@@ -72,6 +73,7 @@ export default function PageHeader({
     }
     return (
       <ScrollLink
+        key={item.name}
         activeClass="active"
         className={btnClassName}
         to={item.name}
