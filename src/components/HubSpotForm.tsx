@@ -11,9 +11,9 @@ const HubSpotForm = ({ formId }: iHubSpotForm) => {
     document.body.appendChild(script);
 
     script.addEventListener("load", () => {
-      // @TS-ignore
+      // @ts-ignore
       if (window.hbspt) {
-        // @TS-ignore
+        // @ts-ignore
         window.hbspt.forms.create({
           portalId: "14545640",
           formId,
