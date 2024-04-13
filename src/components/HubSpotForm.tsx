@@ -21,7 +21,7 @@ const HubSpotForm = ({ formId }: iHubSpotForm) => {
         });
       }
     });
-  }, []);
+  }, [formId, formHtmlId]);
 
   return <div id={formHtmlId}></div>;
 };
