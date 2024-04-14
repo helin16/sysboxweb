@@ -103,12 +103,12 @@ const NewsList = ({ noOfItems = 12 }: iNewsList) => {
     );
   }
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
       {(data?.data || []).map((newsItem: iNewsItem) => {
         const url = `https://r.showmine66.com/item/${newsItem.id}`;
         return (
-          <div className="flex gap-4" key={newsItem.id}>
-            <a href={url} className="w-1/2">
+          <div className="flex gap-2" key={newsItem.id}>
+            <a href={url} className="w-1/3">
               <Image
                 src={newsItem.CoverAsset?.url || ""}
                 height={180}
@@ -116,7 +116,7 @@ const NewsList = ({ noOfItems = 12 }: iNewsList) => {
                 alt={newsItem.title}
               />
             </a>
-            <div>
+            <div className="w-2/3">
               <a
                 className="font-semibold truncate hover:text-clip hover:text-yellow-400"
                 href={url}

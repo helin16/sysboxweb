@@ -200,7 +200,7 @@ const HomePage = () => {
 
       <PageSection
         id={PAGE_NAME_CONTACT_US}
-        innerClassName="bg-white lg:flex px-16 py-16 gap-10 rounded-md"
+        innerClassName="bg-white lg:flex lg:px-16 px-4 py-16 gap-10 rounded-md"
         className="mt-24"
       >
         <div className="lg:w-2/5">
