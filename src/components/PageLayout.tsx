@@ -6,6 +6,7 @@ import PageFooter from "./PageFooter";
 import PageHeader from "./PageHeader";
 import PageSection from "./PageSection";
 import Head from "next/head";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 type iPageLayout = {
   pageTitle?: string;
@@ -35,6 +36,7 @@ const PageLayout = ({
       >
         {children}
       </main>
+      <SpeedInsights />
       <PageFooter />
     </>
   );
