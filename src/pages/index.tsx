@@ -14,6 +14,7 @@ import {
   PAGE_NAME_SERVICES,
   PAGE_NAME_TESTIMONIALS,
 } from "@/components/PageHeader";
+import GoogleReviews from "@/components/GoogleReviews";
 
 const HomePage = () => {
   return (
@@ -219,6 +220,14 @@ const HomePage = () => {
         <div className="lg:w-3/5">
           <HubSpotForm formId="08d84a8d-7587-4de9-b206-1aa798db62ce" />
         </div>
+      </PageSection>
+
+      <PageSection
+        id={PAGE_NAME_CONTACT_US}
+        innerClassName="lg:block lg:px-16 px-4 py-16 gap-10 rounded-md"
+        className="mt-24"
+      >
+        <GoogleReviews />
       </PageSection>
     </PageLayout>
   );

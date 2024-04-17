@@ -1,0 +1,89 @@
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { iGoogleReviewSummary } from "@/pages/api/google-reviews";
+import RatingByStars from "./RatingByStars";
+import moment from "moment";
+
+const GoogleReviews = () => {
+  const [reviewSum, setReviewSum] = useState<iGoogleReviewSummary | null>(null);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch("/api/google-reviews");
+        const data = await response.json();
+        setReviewSum(data);
+      } catch (error) {
+        console.error("Error fetching Google Reviews:", error);
+      }
+    };
+
+    fetchReviews();
+  }, []);
+
+  if ((reviewSum?.reviews || []).length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="flex lg:flex-row flex-col gap-6 items-center">
+      <div className="lg:w-3/12 text-center">
+        <h2 className="font-semibold text-2xl">Excellent</h2>
+        <RatingByStars
+          rating={reviewSum?.rating || 0}
+          size={23}
+          className={"mx-auto"}
+        />
+        <p>Based on {(reviewSum?.reviews || []).length} reviews</p>
+        <Image
+          src={"/images/google_logo.svg"}
+          className="mx-auto mt-4"
+          height={25}
+          width={110}
+          alt="Google"
+        />
+      </div>
+      <div className="w-full overflow-x-hidden">
+        <ul className="flex gap-4 items-stretch w-[1000rem]">
+          {(reviewSum?.reviews || []).map((review) => (
+            <li
+              key={review.author_name}
+              className="inline-block bg-white p-6 rounded md:w-[22.3rem] w-full max-w-max"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex gap-3 items-center">
+                  <Image
+                    src={review.profile_photo_url || ""}
+                    alt={review.author_name}
+                    width={45}
+                    height={45}
+                  />
+                  <div>
+                    <div className="font-semibold">{review.author_name}</div>
+                    <div className="text-xs">
+                      {moment.unix(review.time).format("ll")}
+                    </div>
+                  </div>
+                </div>
+                <Image
+                  src={"/images/google_icon.svg"}
+                  alt={"google"}
+                  width={20}
+                  height={20}
+                />
+              </div>
+              <RatingByStars
+                rating={review.rating || 0}
+                size={14}
+                className="mt-5"
+              />
+              <p>{review.text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default GoogleReviews;
