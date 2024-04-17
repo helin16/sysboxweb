@@ -6,6 +6,7 @@ import moment from "moment";
 
 const GoogleReviews = () => {
   const [reviewSum, setReviewSum] = useState<iGoogleReviewSummary | null>(null);
+  const reviewWidthRem = 22.3;
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -27,7 +28,10 @@ const GoogleReviews = () => {
 
   return (
     <div className="flex lg:flex-row flex-col gap-6 items-center">
-      <div className="lg:w-3/12 text-center">
+      <a
+        className="lg:w-3/12 text-center block"
+        href={"https://maps.app.goo.gl/uXo4yhTZxRb5tQGp6"}
+      >
         <h2 className="font-semibold text-2xl">Excellent</h2>
         <RatingByStars
           rating={reviewSum?.rating || 0}
@@ -42,13 +46,17 @@ const GoogleReviews = () => {
           width={110}
           alt="Google"
         />
-      </div>
-      <div className="w-full overflow-x-hidden">
-        <ul className="flex gap-4 items-stretch w-[1000rem]">
+      </a>
+      <div className="w-full overflow-x-auto">
+        <ul
+          className={`flex gap-4 items-stretch w-[${
+            Math.round((reviewSum?.reviews || []).length * (reviewWidthRem + 10))
+          }rem]`}
+        >
           {(reviewSum?.reviews || []).map((review) => (
             <li
               key={review.author_name}
-              className="inline-block bg-white p-6 rounded md:w-[22.3rem] w-full max-w-max"
+              className={`inline-block bg-white p-6 rounded w-[${reviewWidthRem}rem] w-full max-w-max hover:bg-slate-50`}
             >
               <div className="flex items-start justify-between">
                 <div className="flex gap-3 items-center">
@@ -59,7 +67,9 @@ const GoogleReviews = () => {
                     height={45}
                   />
                   <div>
-                    <div className="font-semibold">{review.author_name}</div>
+                    <div className="font-semibold text-nowrap text-ellipsis overflow-hidden w-[200px]">
+                      {review.author_name}
+                    </div>
                     <div className="text-xs">
                       {moment.unix(review.time).format("ll")}
                     </div>
