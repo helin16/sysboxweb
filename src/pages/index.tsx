@@ -19,7 +19,7 @@ import GoogleReviews from "@/components/GoogleReviews";
 const HomePage = () => {
   return (
     <PageLayout pageTitle={"Sysbox - make your ideas shine since 2017"}>
-      <PageHeroPanel className="bg-[url('/images/bg-blur.png')] bg-cover bg-no-repeat bg-transparent">
+      <PageHeroPanel className="bg-[url('/images/bg-blur.webp')] bg-cover bg-no-repeat bg-transparent">
         <div className="pt-44 pb-10 px-20 lg:mt-32">
           <h1 className="text-white lg:text-8xl md:text-5xl text-4xl drop-shadow-xl">
             Make
@@ -72,7 +72,7 @@ const HomePage = () => {
       >
         <div className="lg:w-1/2">
           <Image
-            src={"/images/home-single-image-2.png"}
+            src={"/images/home-single-image-2.webp"}
             width={1000}
             height={1000}
             alt="About Us"
@@ -111,42 +111,42 @@ const HomePage = () => {
         <div className="flex lg:px-24 flex-wrap">
           {[
             {
-              src: "/images/MIESoft.png",
+              src: "/images/MIESoft.webp",
               url: "https://miesoft.com.au",
               alt: "MIESoft",
             },
             {
-              src: "/images/ShowMine.png",
+              src: "/images/ShowMine.webp",
               url: "https://showmine.com.au",
               alt: "ShowMine",
             },
             {
-              src: "/images/MERP.png",
+              src: "/images/MERP.webp",
               url: "https://merp.com.au",
               alt: "MERP",
             },
             {
-              src: "/images/Shamrock.png",
+              src: "/images/Shamrock.webp",
               url: "https://shamrockpoly.com.au",
               alt: "Shamrock Poly",
             },
             {
-              src: "/images/xjslibrary.png",
+              src: "/images/xjslibrary.webp",
               url: "https://xjslibrary.org.au",
               alt: "XJS Library",
             },
             {
-              src: "/images/Artchain.png",
+              src: "/images/Artchain.webp",
               url: "#",
               alt: "Artchain Global",
             },
             {
-              src: "/images/snugglepotts.png",
+              src: "/images/snugglepotts.webp",
               url: "https://snugglepotts.com.au",
               alt: "Snugglepotts ELC",
             },
             {
-              src: "/images/Great_Oceania.png",
+              src: "/images/Great_Oceania.webp",
               url: "https://greatoceania.com.au",
               alt: "Great Oceania",
             },
@@ -177,7 +177,7 @@ const HomePage = () => {
       >
         <div className="lg:w-1/2 flex justify-end">
           <Image
-            src={"/images/home-single-image-4.png"}
+            src={"/images/home-single-image-4.webp"}
             width={1000}
             height={1000}
             alt="About Us"
