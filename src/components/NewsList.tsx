@@ -69,7 +69,7 @@ const NewsList = ({ noOfItems = 12 }: iNewsList) => {
       .get<iList<iNewsItem>>("https://i.showmine66.com/item", {
         params: {
           perPage: noOfItems,
-          currentPage: 2,
+          currentPage: 1,
           sort: "publishedAt:DESC",
           where: JSON.stringify({
             isActive: true,
@@ -83,7 +83,6 @@ const NewsList = ({ noOfItems = 12 }: iNewsList) => {
         },
       })
       .then((resp) => {
-        console.log("resp.data", resp.data);
         setData(resp.data);
       })
       .catch((err) => {
