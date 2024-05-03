@@ -106,7 +106,7 @@ const NewsList = ({ noOfItems = 12 }: iNewsList) => {
       {(data?.data || []).map((newsItem: iNewsItem) => {
         const url = `https://r.showmine66.com/item/${newsItem.id}`;
         return (
-          <div className="flex gap-2" key={newsItem.id}>
+          <div className="flex gap-2 w-max-full" key={newsItem.id}>
             <a href={url} className="w-1/3">
               <Image
                 src={newsItem.CoverAsset?.url || ""}
@@ -117,7 +117,7 @@ const NewsList = ({ noOfItems = 12 }: iNewsList) => {
             </a>
             <div className="w-2/3">
               <a
-                className="font-semibold truncate hover:text-clip hover:text-yellow-400"
+                className="block font-semibold truncate hover:text-clip hover:text-yellow-400"
                 href={url}
               >
                 {newsItem.title}

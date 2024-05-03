@@ -1,10 +1,11 @@
 import Link from "next/link";
 import AppLogo from "./AppLogo";
 import NewsList from "./NewsList";
+import { URL_MERP, URL_MIESOFT, URL_SHOWMINE } from "./Url";
 
 const PageFooter = () => {
   return (
-    <div className="p-3 mt-24">
+    <div className="p-3 mt-24 pt-16">
       <div className={"container lg:gap-8 lg:flex mx-auto justify-stretch"}>
         <div className={"lg:w-3/12 py-5 lg:px-3"}>
           <Link href="/">
@@ -64,15 +65,15 @@ const PageFooter = () => {
           {[
             {
               title: "MERP – A web-base ERP system",
-              url: "https://merp.com.au/",
+              url: URL_MERP,
             },
             {
               title: "MIESoft – MRP system for Manufacturers",
-              url: "https://miesoft.com.au/",
+              url: URL_MIESOFT,
             },
             {
               title: "ShowMine – Content broadcasting platform",
-              url: "https://www.showmine.com/",
+              url: URL_SHOWMINE,
             },
           ].map((link) => {
             return (

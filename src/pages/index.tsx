@@ -9,12 +9,13 @@ import HubSpotForm from "@/components/HubSpotForm";
 import {
   PAGE_NAME_ABOUT_US,
   PAGE_NAME_CONTACT_US,
-  PAGE_NAME_HOME,
   PAGE_NAME_OUR_WORK,
   PAGE_NAME_SERVICES,
   PAGE_NAME_TESTIMONIALS,
 } from "@/components/PageHeader";
 import GoogleReviews from "@/components/GoogleReviews";
+import Partners from "@/components/Partners";
+import LatestWork from "@/components/LatestWork";
 
 const HomePage = () => {
   return (
@@ -100,75 +101,7 @@ const HomePage = () => {
         innerClassName="text-center m-auto"
         className="mt-24"
       >
-        <h1 className="text-4xl text-black font-semibold pt-4 pb-4 lg:pb-10 md:text-3xl lg:text-6xl">
-          Latest Work
-        </h1>
-        <p className="xl:w-2/5 m-auto text-lg pb-10">
-          We’ve done a lot of customised systems, websites, and supported
-          various frameworks and platforms. Below are the ones we’ve done
-          recently.
-        </p>
-        <div className="flex lg:px-24 flex-wrap">
-          {[
-            {
-              src: "/images/MIESoft.webp",
-              url: "https://miesoft.com.au",
-              alt: "MIESoft",
-            },
-            {
-              src: "/images/ShowMine.webp",
-              url: "https://showmine.com.au",
-              alt: "ShowMine",
-            },
-            {
-              src: "/images/MERP.webp",
-              url: "https://merp.com.au",
-              alt: "MERP",
-            },
-            {
-              src: "/images/Shamrock.webp",
-              url: "https://shamrockpoly.com.au",
-              alt: "Shamrock Poly",
-            },
-            {
-              src: "/images/xjslibrary.webp",
-              url: "https://xjslibrary.org.au",
-              alt: "XJS Library",
-            },
-            {
-              src: "/images/Artchain.webp",
-              url: "#",
-              alt: "Artchain Global",
-            },
-            {
-              src: "/images/snugglepotts.webp",
-              url: "https://snugglepotts.com.au",
-              alt: "Snugglepotts ELC",
-            },
-            {
-              src: "/images/Great_Oceania.webp",
-              url: "https://greatoceania.com.au",
-              alt: "Great Oceania",
-            },
-          ].map((showingCase: any) => {
-            return (
-              <div
-                className="lg:w-1/4 md:w-1/2 w-full overflow-hidden"
-                key={showingCase.alt}
-              >
-                <a href={showingCase.url}>
-                  <Image
-                    className="transition-all ease-in hover:scale-110"
-                    src={showingCase.src}
-                    height={1000}
-                    width={1000}
-                    alt={showingCase.alt}
-                  />
-                </a>
-              </div>
-            );
-          })}
-        </div>
+        <LatestWork />
       </PageSection>
 
       <div
@@ -224,10 +157,14 @@ const HomePage = () => {
 
       <PageSection
         id={PAGE_NAME_CONTACT_US}
-        innerClassName="lg:block lg:px-16 px-4 py-16 gap-10 rounded-md"
+        innerClassName="lg:block lg:px-16 px-4 pt-16 gap-10 rounded-md"
         className="mt-24"
       >
         <GoogleReviews />
+      </PageSection>
+
+      <PageSection id={PAGE_NAME_CONTACT_US} className="mt-24">
+        <Partners />
       </PageSection>
     </PageLayout>
   );
