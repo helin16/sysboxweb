@@ -36,7 +36,7 @@ const HomePage = () => {
 
       <PageSection
         id={PAGE_NAME_SERVICES}
-        innerClassName="flex md:flex-row gap-8 flex-col"
+        innerClassName="flex md:flex-row gap-8 flex-col px-6"
       >
         {[
           {
