@@ -18,14 +18,20 @@ const Partners = () => {
           {
             title: "Vultr",
             link: "https://www.vultr.com/?ref=9611520-8H",
-            imageUrl: "/images/vultr.png",
+            imageUrl: "/images/vultr.webp",
             description: "Claim your $100 now.",
           },
           {
             title: "BlueHost",
             link: "bluehost.sjv.io/y2M9by",
-            imageUrl: "/images/bluehost.png",
+            imageUrl: "/images/bluehost.webp",
             description: "Best place to hold your WordPress site!",
+          },
+          {
+            title: "AWS",
+            link: "https://aws.amazon.com/",
+            imageUrl: "/images/aws.webp",
+            description: "Amazon Web Services",
           },
         ].map((item) => {
           return (
