@@ -23,7 +23,7 @@ const Partners = () => {
           },
           {
             title: "BlueHost",
-            link: "bluehost.sjv.io/y2M9by",
+            link: "https://bluehost.sjv.io/y2M9by",
             imageUrl: "/images/bluehost.webp",
             description: "Best place to hold your WordPress site!",
           },
