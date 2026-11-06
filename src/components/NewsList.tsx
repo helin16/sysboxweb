@@ -1,9 +1,9 @@
 "use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Spinner from "./Spinner";
 import Image from "next/image";
-// import { GetServerSideProps } from "next";
+import moment from "moment";
+import SectionHeading from "./SectionHeading";
 
 type iAsset = {
   comments: string;
@@ -56,11 +56,95 @@ type iList<T> = {
   pages: number;
 };
 
+const newsUrl = (item: iNewsItem) => `https://r.showmine66.com/item/${item.id}`;
+
+/** Excerpts arrive as HTML; show them as plain text. */
+const toPlainText = (html: string) => {
+  if (typeof window === "undefined") return html.replace(/<[^>]+>/g, " ");
+  const el = document.createElement("div");
+  // Keep words apart where paragraphs, list items or line breaks end.
+  el.innerHTML = html.replace(/<\/(p|li|div|h[1-6])>|<br\s*\/?>/gi, " $&");
+  return (el.textContent || "").replace(/\s+/g, " ").trim();
+};
+
+const ArrowIcon = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M5 12h14M13 6l6 6-6 6" />
+  </svg>
+);
+
+const NewsCard = ({ item }: { item: iNewsItem }) => (
+  <a
+    href={newsUrl(item)}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="group flex flex-col h-full bg-white rounded-2xl overflow-hidden border border-slate-200 transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+  >
+    <div className="aspect-video overflow-hidden bg-slate-100">
+      {item.CoverAsset?.url && (
+        <Image
+          src={item.CoverAsset.url}
+          width={640}
+          height={360}
+          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          alt=""
+          className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+        />
+      )}
+    </div>
+    <div className="flex flex-col flex-1 p-7 text-left">
+      {item.publishedAt && (
+        <time
+          dateTime={moment(item.publishedAt).toISOString()}
+          className="text-sm text-slate-500"
+        >
+          {moment(item.publishedAt).format("D MMMM YYYY")}
+        </time>
+      )}
+      <h3 className="mt-2 text-xl font-bold text-slate-900 leading-snug line-clamp-3 group-hover:text-blue-700 transition-colors">
+        {item.title}
+      </h3>
+      <p className="mt-3 text-base leading-7 text-slate-600 line-clamp-4">
+        {toPlainText(item.excerpt || "")}
+      </p>
+      <span className="mt-auto pt-6 inline-flex items-center gap-2 text-sm font-semibold text-blue-600">
+        Read more
+        <span className="transition-transform duration-300 group-hover:translate-x-1">
+          <ArrowIcon />
+        </span>
+      </span>
+    </div>
+  </a>
+);
+
+const SkeletonCard = () => (
+  <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 animate-pulse">
+    <div className="aspect-video bg-slate-200" />
+    <div className="p-7 space-y-3">
+      <div className="h-3 w-24 bg-slate-200 rounded" />
+      <div className="h-5 w-4/5 bg-slate-200 rounded" />
+      <div className="h-5 w-3/5 bg-slate-200 rounded" />
+      <div className="h-3 w-full bg-slate-100 rounded mt-4" />
+      <div className="h-3 w-full bg-slate-100 rounded" />
+    </div>
+  </div>
+);
+
 type iNewsList = {
   noOfItems?: number;
 };
-const NewsList = ({ noOfItems = 12 }: iNewsList) => {
-  const [isLoading, setIsLoading] = useState(false);
+const NewsList = ({ noOfItems = 3 }: iNewsList) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<iList<iNewsItem> | null>(null);
 
   useEffect(() => {
@@ -85,7 +169,7 @@ const NewsList = ({ noOfItems = 12 }: iNewsList) => {
       .then((resp) => {
         setData(resp.data);
       })
-      .catch((err) => {
+      .catch(() => {
         setData(null);
       })
       .finally(() => {
@@ -93,59 +177,29 @@ const NewsList = ({ noOfItems = 12 }: iNewsList) => {
       });
   }, [noOfItems]);
 
-  if (isLoading === true) {
-    return (
-      <div className="flex gap-4">
-        <Spinner className="w-4" />
-        <div>Loading ...</div>
-      </div>
-    );
+  const items = data?.data || [];
+  if (!isLoading && items.length === 0) {
+    return null;
   }
+
   return (
-    <div className="flex flex-col gap-4">
-      {(data?.data || []).map((newsItem: iNewsItem) => {
-        const url = `https://r.showmine66.com/item/${newsItem.id}`;
-        return (
-          <div className="flex gap-2 w-max-full" key={newsItem.id}>
-            <a href={url} className="w-1/3">
-              <Image
-                src={newsItem.CoverAsset?.url || ""}
-                height={180}
-                width={180}
-                alt={newsItem.title}
-              />
-            </a>
-            <div className="w-2/3">
-              <a
-                className="block font-semibold truncate hover:text-clip hover:text-yellow-400"
-                href={url}
-              >
-                {newsItem.title}
-              </a>
-              <p
-                className="text-xs"
-                dangerouslySetInnerHTML={{ __html: newsItem.excerpt || "" }}
-              ></p>
-            </div>
-          </div>
-        );
-      })}
+    <div>
+      <SectionHeading eyebrow="From the Blog" title="Latest News" />
+      <ul className="mt-14 grid gap-6 lg:gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {isLoading
+          ? Array.from({ length: noOfItems }).map((_, i) => (
+              <li key={i}>
+                <SkeletonCard />
+              </li>
+            ))
+          : items.map((item) => (
+              <li key={item.id}>
+                <NewsCard item={item} />
+              </li>
+            ))}
+      </ul>
     </div>
   );
 };
-
-// export const getServerSideProps: GetServerSideProps = async () => {
-//   // Fetch data from your API or perform any server-side logic
-//   const data = {
-//     news: [],
-//   };
-
-//   // Return the data as props
-//   return {
-//     props: {
-//       data,
-//     },
-//   };
-// };
 
 export default NewsList;

@@ -30,6 +30,7 @@ const PageLayout = ({
       </Head>
       <PageHeader currentPageName={currentPageName} />
       <main
+        className="pt-20"
         style={
           withMinHeight === true ? { minHeight: "calc(100vh - 18rem)" } : {}
         }

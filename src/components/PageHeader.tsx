@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Link as ScrollLink, animateScroll } from "react-scroll";
 import { useEffect, useState } from "react";
 import AppLogo from "./AppLogo";
-import ContactUsBtn from "./ContactUsBtn";
+import ContactUsBtn, { CONTACT_PAGE_URL } from "./ContactUsBtn";
 
 export const PAGE_NAME_HOME = "home";
 export const PAGE_NAME_SERVICES = "services";
@@ -14,17 +14,25 @@ export const PAGE_NAME_CONTACT_US = "contact";
 
 export type iMenuItem = {
   name: string;
+  label: string;
   href: string;
 };
 
 export const allMenuItems: iMenuItem[] = [
-  { name: PAGE_NAME_HOME, href: "/" },
-  { name: PAGE_NAME_SERVICES, href: `/#${PAGE_NAME_SERVICES}` },
-  { name: PAGE_NAME_ABOUT_US, href: `/#${PAGE_NAME_ABOUT_US}` },
-  { name: PAGE_NAME_OUR_WORK, href: `/#${PAGE_NAME_OUR_WORK}` },
-  { name: PAGE_NAME_TESTIMONIALS, href: `/#${PAGE_NAME_TESTIMONIALS}` },
-  { name: PAGE_NAME_CONTACT_US, href: `/#${PAGE_NAME_CONTACT_US}` },
+  { name: PAGE_NAME_HOME, label: "Home", href: "/" },
+  { name: PAGE_NAME_ABOUT_US, label: "About", href: `/#${PAGE_NAME_ABOUT_US}` },
+  { name: PAGE_NAME_SERVICES, label: "Services", href: `/#${PAGE_NAME_SERVICES}` },
+  { name: PAGE_NAME_OUR_WORK, label: "Our Work", href: `/#${PAGE_NAME_OUR_WORK}` },
+  {
+    name: PAGE_NAME_TESTIMONIALS,
+    label: "Testimonials",
+    href: `/#${PAGE_NAME_TESTIMONIALS}`,
+  },
+  { name: PAGE_NAME_CONTACT_US, label: "Contact", href: CONTACT_PAGE_URL },
 ];
+
+/** Height of the fixed header, used to offset in-page scrolling. */
+export const HEADER_OFFSET = 80;
 
 type iPageHeader = {
   currentPageName?: string;
@@ -34,162 +42,148 @@ export default function PageHeader({
   currentPageName = PAGE_NAME_HOME,
 }: iPageHeader) {
   const [showingSideMenu, setShowingSideMenu] = useState(false);
-  const [activeMenuName, setActiveMenuName] = useState(PAGE_NAME_HOME);
-  const [isSticky, setIsSticky] = useState(false);
+  const [activeMenuName, setActiveMenuName] = useState(currentPageName);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const isHomePage = currentPageName === PAGE_NAME_HOME;
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const getMenuItem = (item: iMenuItem, extraClassName = "") => {
-    const btnClassName = `leading-6 uppercase text-gray-700 cursor-pointer hover:text-yellow-400 px-3 py-2 font-semibold ${
-      extraClassName || ""
-    } ${activeMenuName === item.name ? "text-yellow-400" : ""}`;
-    const btnName = item.name.split("-").join(" ");
+  const closeMenu = () => setShowingSideMenu(false);
+
+  const getMenuItem = (item: iMenuItem, mobile = false) => {
+    const isActive = activeMenuName === item.name;
+    const className = mobile
+      ? `block rounded-lg px-3 py-3 text-lg font-semibold cursor-pointer ${
+          isActive ? "bg-blue-50 text-blue-700" : "text-slate-700 hover:bg-slate-50"
+        }`
+      : `relative px-1 py-2 text-base xl:text-lg font-semibold cursor-pointer transition-colors duration-200 after:absolute after:inset-x-1 after:bottom-0 after:h-0.5 after:rounded-full after:bg-blue-600 after:transition-transform after:duration-200 after:origin-left ${
+          isActive
+            ? "text-blue-600 after:scale-x-100"
+            : "text-slate-800 hover:text-blue-600 after:scale-x-0 hover:after:scale-x-100"
+        }`;
 
     if (item.name === PAGE_NAME_HOME) {
       return (
         <Link
           key={item.name}
           href={"/"}
-          onClick={() => animateScroll.scrollToTop()}
-          className={btnClassName}
+          onClick={() => {
+            closeMenu();
+            if (isHomePage) animateScroll.scrollToTop({ duration: 500 });
+          }}
+          className={className}
         >
-          {btnName}
+          {item.label}
         </Link>
+      );
+    }
+    if (item.name === PAGE_NAME_CONTACT_US) {
+      return (
+        <Link key={item.name} href={item.href} className={className} onClick={closeMenu}>
+          {item.label}
+        </Link>
+      );
+    }
+    if (!isHomePage) {
+      // Section links only scroll in place on the home page; elsewhere a
+      // normal link loads the home page and the browser jumps to the section.
+      return (
+        <a key={item.name} href={item.href} className={className}>
+          {item.label}
+        </a>
       );
     }
     return (
       <ScrollLink
         key={item.name}
-        activeClass="active"
-        className={btnClassName}
+        className={className}
         to={item.name}
+        href={item.href}
         spy={true}
         smooth={true}
         hashSpy={true}
-        offset={-100}
+        offset={-HEADER_OFFSET}
         duration={500}
         isDynamic={true}
+        onClick={closeMenu}
         onSetActive={(to) => setActiveMenuName(to)}
-        onSetInactive={() => setActiveMenuName("")}
+        onSetInactive={() => setActiveMenuName(PAGE_NAME_HOME)}
         ignoreCancelEvents={false}
-        spyThrottle={500}
+        spyThrottle={300}
       >
-        {btnName}
+        {item.label}
       </ScrollLink>
     );
   };
 
-  const getSideMenu = () => {
-    if (showingSideMenu !== true) {
-      return null;
-    }
-    return (
-      <div
-        className={"bg-white absolute w-full left-0 top-0 p-6 opacity-100"}
-        style={{
-          boxShadow: "0 4px 6px rgba(33,51,67,.12)",
-          borderBottom: "1px solid rgba(33,51,67,.35)",
-        }}
-      >
-        <div className={"flex items-center justify-between"}>
-          <AppLogo width={200} />
-          <div className="flex gap-1 items-center">
-            <div>Close</div>
-            <button onClick={() => setShowingSideMenu(!showingSideMenu)}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                className="bi bi-list h-6 w-6"
-                viewBox="0 0 16 16"
-              >
-                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
-              </svg>
-            </button>
-          </div>
-        </div>
-        <div className="flex flex-col mt-8 gap-2">
-          {allMenuItems.map((menuItem) => getMenuItem(menuItem, "py-2"))}
-        </div>
-
-        <div className="flex mt-8">
-          <ContactUsBtn />
-        </div>
-      </div>
-    );
-  };
-
   return (
-    <div
-      className={`${
-        isSticky === true
-          ? "top-0 z-50"
-          : showingSideMenu === true
-          ? "z-50"
-          : "opacity-60"
-      } fixed transition-all duration-300 ease-in bg-white w-full`}
+    <header
+      className={`fixed top-0 inset-x-0 z-50 bg-white/95 backdrop-blur transition-shadow duration-300 ${
+        isScrolled || showingSideMenu
+          ? "shadow-md shadow-slate-200/60"
+          : "border-b border-slate-100"
+      }`}
     >
-      <header
-        className="w-full"
-        style={{
-          boxShadow: "0 4px 6px rgba(33,51,67,.12)",
-          borderBottom: "1px solid rgba(33,51,67,.35)",
-        }}
+      <nav
+        className="mx-auto container flex h-20 items-center justify-between px-4 lg:px-6"
+        aria-label="Global"
       >
-        <nav
-          className="mx-auto flex container items-center justify-between py-2 px-3"
-          aria-label="Global"
+        <Link href="/" className="flex items-center" onClick={closeMenu}>
+          <span className="sr-only">Sysbox</span>
+          <AppLogo width={200} className="h-auto w-[160px] sm:w-[190px] xl:w-[200px]" />
+        </Link>
+
+        <div className="hidden lg:flex lg:items-center lg:gap-x-6 xl:gap-x-9">
+          {allMenuItems.map((menuItem) => getMenuItem(menuItem))}
+        </div>
+
+        <div className="hidden lg:block">
+          <ContactUsBtn withArrow={false} className="whitespace-nowrap" />
+        </div>
+
+        <button
+          type="button"
+          className="lg:hidden inline-flex items-center gap-2 rounded-lg px-3 py-2 text-base font-semibold text-slate-800 hover:bg-slate-50"
+          aria-expanded={showingSideMenu}
+          aria-controls="mobile-menu"
+          onClick={() => setShowingSideMenu(!showingSideMenu)}
         >
-          <div className="flex lg:flex-1">
-            <Link href="/" className="-m-1.5 p-1.5">
-              <span className="sr-only">
-                {process.env.NEXT_PUBLIC_APP_NAME || ""}
-              </span>
-              <AppLogo
-                className="duration-300"
-                width={isSticky === true ? 150 : 220}
-                height={isSticky === true ? 100 : 150}
-              />
-            </Link>
+          {showingSideMenu ? "Close" : "Menu"}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            className="h-6 w-6"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            {showingSideMenu ? (
+              <path d="M6 6l12 12M18 6L6 18" />
+            ) : (
+              <path d="M4 7h16M4 12h16M4 17h16" />
+            )}
+          </svg>
+        </button>
+      </nav>
+
+      {showingSideMenu && (
+        <div
+          id="mobile-menu"
+          className="lg:hidden border-t border-slate-100 bg-white px-4 pb-6 pt-2"
+        >
+          <div className="flex flex-col gap-1">
+            {allMenuItems.map((menuItem) => getMenuItem(menuItem, true))}
           </div>
-          <div className="hidden lg:flex lg:gap-x-2 lg:items-center">
-            {allMenuItems.map((menuItem) => getMenuItem(menuItem))}
-            <div className="flex"></div>
-          </div>
-          <div className="lg:hidden">
-            <button onClick={() => setShowingSideMenu(!showingSideMenu)}>
-              <div className="flex gap-1 items-center">
-                <div>Menu</div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  className="bi bi-list h-8 w-8"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
-                  />
-                </svg>
-              </div>
-            </button>
-            {getSideMenu()}
-          </div>
-        </nav>
-      </header>
-    </div>
+          <ContactUsBtn className="mt-4 w-full" />
+        </div>
+      )}
+    </header>
   );
 }

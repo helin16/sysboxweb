@@ -1,22 +1,27 @@
 import Image from "next/image";
 
+/** Natural size of the trimmed logo file, used to keep its proportions. */
+const LOGO_WIDTH = 1915;
+const LOGO_HEIGHT = 597;
+
 type iAppLogo = {
+  /** Displayed width in pixels; height follows the logo's proportions. */
   width?: number;
   height?: number;
   style?: any;
   className?: string;
 };
-const AppLogo = ({ width, height, style, className, ...props }: iAppLogo) => {
+const AppLogo = ({ width = 200, style, className }: iAppLogo) => {
   return (
     <Image
       className={className}
-      alt={"Sysbox Logo"}
-      width={width || 200}
-      height={height || 100}
+      alt={"Sysbox Digital – Web, Software, Solutions"}
+      width={width}
+      height={Math.round((width * LOGO_HEIGHT) / LOGO_WIDTH)}
+      sizes={`${width}px`}
       style={style}
       priority
-      {...props}
-      src={"/images/logo.png"}
+      src={"/images/logo-sysbox-digital.png"}
     />
   );
 };
