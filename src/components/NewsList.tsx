@@ -56,7 +56,10 @@ type iList<T> = {
   pages: number;
 };
 
-const newsUrl = (item: iNewsItem) => `https://r.showmine66.com/item/${item.id}`;
+const NEWS_ITEM_WIDTH =
+  "w-[calc((100%-0.75rem)/2)] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-4rem)/3)]";
+
+const newsUrl =(item: iNewsItem) => `https://r.showmine66.com/item/${item.id}`;
 
 /** Excerpts arrive as HTML; show them as plain text. */
 const toPlainText = (html: string) => {
@@ -96,28 +99,28 @@ const NewsCard = ({ item }: { item: iNewsItem }) => (
           src={item.CoverAsset.url}
           width={640}
           height={360}
-          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+          sizes="(min-width: 1024px) 33vw, 50vw"
           alt=""
           className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         />
       )}
     </div>
-    <div className="flex flex-col flex-1 p-7 text-left">
+    <div className="flex flex-col flex-1 p-3.5 sm:p-7 text-left">
       {item.publishedAt && (
         <time
           dateTime={moment(item.publishedAt).toISOString()}
-          className="text-sm text-slate-500"
+          className="text-xs sm:text-sm text-slate-500"
         >
           {moment(item.publishedAt).format("D MMMM YYYY")}
         </time>
       )}
-      <h3 className="mt-2 text-xl font-bold text-slate-900 leading-snug line-clamp-3 group-hover:text-blue-700 transition-colors">
+      <h3 className="mt-1.5 sm:mt-2 text-[15px] sm:text-xl font-bold text-slate-900 leading-snug line-clamp-3 group-hover:text-blue-700 transition-colors">
         {item.title}
       </h3>
-      <p className="mt-3 text-base leading-7 text-slate-600 line-clamp-4">
+      <p className="mt-2 sm:mt-3 text-[13px] leading-5 sm:text-base sm:leading-7 text-slate-600 line-clamp-3 sm:line-clamp-4">
         {toPlainText(item.excerpt || "")}
       </p>
-      <span className="mt-auto pt-6 inline-flex items-center gap-2 text-sm font-semibold text-blue-600">
+      <span className="mt-auto pt-4 sm:pt-6 inline-flex items-center gap-2 text-[13px] sm:text-sm font-semibold text-blue-600">
         Read more
         <span className="transition-transform duration-300 group-hover:translate-x-1">
           <ArrowIcon />
@@ -130,7 +133,7 @@ const NewsCard = ({ item }: { item: iNewsItem }) => (
 const SkeletonCard = () => (
   <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 animate-pulse">
     <div className="aspect-video bg-slate-200" />
-    <div className="p-7 space-y-3">
+    <div className="p-3.5 sm:p-7 space-y-3">
       <div className="h-3 w-24 bg-slate-200 rounded" />
       <div className="h-5 w-4/5 bg-slate-200 rounded" />
       <div className="h-5 w-3/5 bg-slate-200 rounded" />
@@ -185,15 +188,16 @@ const NewsList = ({ noOfItems = 3 }: iNewsList) => {
   return (
     <div>
       <SectionHeading eyebrow="From the Blog" title="Latest News" />
-      <ul className="mt-14 grid gap-6 lg:gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Two per row below laptop size; flex-wrap centres an odd last card. */}
+      <ul className="mt-10 sm:mt-14 flex flex-wrap justify-center gap-3 sm:gap-6 lg:gap-8">
         {isLoading
           ? Array.from({ length: noOfItems }).map((_, i) => (
-              <li key={i}>
+              <li key={i} className={NEWS_ITEM_WIDTH}>
                 <SkeletonCard />
               </li>
             ))
           : items.map((item) => (
-              <li key={item.id}>
+              <li key={item.id} className={NEWS_ITEM_WIDTH}>
                 <NewsCard item={item} />
               </li>
             ))}

@@ -75,21 +75,23 @@ const ProjectCard = ({ project }: { project: iProject }) => {
           src={project.src}
           height={600}
           width={600}
-          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+          sizes="(min-width: 1024px) 25vw, 50vw"
           alt={project.alt}
         />
       </div>
-      <div className="flex items-center justify-between gap-3 px-5 py-4 text-left">
+      <div className="flex items-center justify-between gap-2 sm:gap-3 px-3 py-3 sm:px-5 sm:py-4 text-left">
         <div className="min-w-0">
-          <div className="font-semibold text-slate-900 truncate">{project.alt}</div>
+          <div className="text-sm leading-snug sm:text-base font-semibold text-slate-900 line-clamp-2 sm:line-clamp-none sm:truncate">
+            {project.alt}
+          </div>
           {project.url && (
-            <div className="text-sm text-slate-500 truncate">
+            <div className="text-xs sm:text-sm text-slate-500 truncate">
               {displayDomain(project.url)}
             </div>
           )}
         </div>
         {project.url && (
-          <span className="shrink-0 w-9 h-9 rounded-full flex items-center justify-center bg-blue-50 text-blue-600 transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white">
+          <span className="shrink-0 w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center bg-blue-50 text-blue-600 transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white">
             <ArrowIcon />
           </span>
         )}
@@ -124,11 +126,11 @@ const LatestWork = () => {
         description="We’ve done a lot of customised systems, websites, and supported various frameworks and platforms. Below are the ones we’ve done recently."
       />
       {/* Flex-wrap rather than grid so a part-filled last row is centred. */}
-      <ul className="mt-14 flex flex-wrap justify-center gap-6 lg:gap-8">
+      <ul className="mt-10 sm:mt-14 flex flex-wrap justify-center gap-3 sm:gap-6 lg:gap-8">
         {PROJECTS.map((project) => (
           <li
             key={project.alt}
-            className="w-full sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-6rem)/4)]"
+            className="w-[calc((100%-0.75rem)/2)] sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-6rem)/4)]"
           >
             <ProjectCard project={project} />
           </li>
