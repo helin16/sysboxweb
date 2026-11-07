@@ -2,6 +2,7 @@ import Link from "next/link";
 import AppLogo from "./AppLogo";
 import ContactUsBtn from "./ContactUsBtn";
 import { allMenuItems } from "./PageHeader";
+import { SERVICES, serviceUrl } from "./services";
 
 export const SOCIAL_LINKS = [
   {
@@ -36,8 +37,8 @@ const FooterHeading = ({ children }: { children: string }) => (
 const PageFooter = () => {
   return (
     <footer className="border-t border-slate-200 bg-slate-50">
-      <div className="container mx-auto px-4 lg:px-6 py-16 grid gap-12 md:grid-cols-2 lg:grid-cols-12">
-        <div className="lg:col-span-4">
+      <div className="container mx-auto px-4 lg:px-6 py-16 grid gap-10 grid-cols-2 lg:grid-cols-12">
+        <div className="col-span-2 lg:col-span-4">
           <Link href="/" className="inline-block">
             <span className="sr-only">Sysbox</span>
             <AppLogo width={240} className="h-auto w-[220px] sm:w-[240px]" />
@@ -72,6 +73,22 @@ const PageFooter = () => {
         </div>
 
         <div className="lg:col-span-3">
+          <FooterHeading>Services</FooterHeading>
+          <ul className="mt-4 space-y-3">
+            {SERVICES.map((service) => (
+              <li key={service.slug}>
+                <Link
+                  href={serviceUrl(service)}
+                  className="text-sm text-slate-600 hover:text-blue-600"
+                >
+                  {service.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="lg:col-span-2">
           <FooterHeading>Quick Links</FooterHeading>
           <ul className="mt-4 space-y-3">
             {allMenuItems.map((item) => (
@@ -87,7 +104,7 @@ const PageFooter = () => {
           </ul>
         </div>
 
-        <div className="lg:col-span-5">
+        <div className="col-span-2 lg:col-span-3">
           <FooterHeading>Contact</FooterHeading>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-600">
             Have a project in mind? We’d love to hear from you.

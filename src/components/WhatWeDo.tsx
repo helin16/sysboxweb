@@ -1,100 +1,7 @@
-import { ReactNode } from "react";
 import Link from "next/link";
 import SectionHeading from "./SectionHeading";
-import { CONTACT_PAGE_URL } from "./ContactUsBtn";
-
-/** 24px line icon in the site's blue. */
-const LineIcon = ({ children }: { children: ReactNode }) => (
-  <svg
-    width="28"
-    height="28"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.8"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    {children}
-  </svg>
-);
-
-type iService = {
-  title: string;
-  description: string;
-  icon: ReactNode;
-  /** Technologies and platforms we work with for this service. */
-  items?: string[];
-};
-
-const SERVICES: iService[] = [
-  {
-    title: "Web Development",
-    description: "Modern, responsive and secure websites built for performance.",
-    icon: <path d="m8 8-5 4 5 4M16 8l5 4-5 4M14 4l-4 16" />,
-    items: ["WordPress themes", "WordPress plugins", "API connectors"],
-  },
-  {
-    title: "eCommerce Solutions",
-    description: "Scalable online stores that drive sales and growth.",
-    icon: (
-      <>
-        <path d="M2 3h2.5l2.3 11.2a1.5 1.5 0 0 0 1.5 1.2h9.1a1.5 1.5 0 0 0 1.5-1.1L21 7H5.6" />
-        <circle cx="9" cy="20" r="1.3" />
-        <circle cx="17" cy="20" r="1.3" />
-      </>
-    ),
-    items: ["WooCommerce"],
-  },
-  {
-    title: "UI / UX Design",
-    description: "User-centred designs that are intuitive, beautiful and effective.",
-    icon: (
-      <>
-        <rect x="3" y="3" width="7.5" height="7.5" rx="1.5" />
-        <rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5" />
-        <rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5" />
-        <rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5" />
-      </>
-    ),
-  },
-  {
-    title: "Custom Software",
-    description: "Tailored web applications to streamline your business.",
-    icon: (
-      <>
-        <circle cx="12" cy="12" r="3" />
-        <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" />
-      </>
-    ),
-    items: ["ERP", "MRP", "CRM"],
-  },
-  {
-    title: "SEO & Online Growth",
-    description: "Improve your visibility and attract the right customers.",
-    icon: (
-      <>
-        <rect x="3" y="14" width="4" height="7" rx="0.5" />
-        <rect x="10" y="9" width="4" height="12" rx="0.5" />
-        <rect x="17" y="3" width="4" height="18" rx="0.5" />
-      </>
-    ),
-  },
-  {
-    title: "Maintenance & Support",
-    description: "Ongoing care, updates and reliable technical support.",
-    icon: (
-      <>
-        <path d="M4 14v-2a8 8 0 0 1 16 0v2" />
-        <rect x="2.5" y="13" width="4" height="6" rx="1.5" />
-        <rect x="17.5" y="13" width="4" height="6" rx="1.5" />
-        <path d="M19.5 19v.5a2.5 2.5 0 0 1-2.5 2.5h-3" />
-      </>
-    ),
-    items: ["AWS Suite", "Shared hosting (Bluehost, CrazyDomains)", "Microsoft"],
-  },
-];
+import LineIcon from "./LineIcon";
+import { SERVICES, serviceUrl } from "./services";
 
 const WhatWeDo = () => (
   <div>
@@ -106,10 +13,10 @@ const WhatWeDo = () => (
 
     <ul className="mt-10 sm:mt-14 grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3">
       {SERVICES.map((service) => (
-        <li key={service.title}>
+        <li key={service.slug}>
           <Link
-            href={CONTACT_PAGE_URL}
-            aria-label={`${service.title} – enquire with us`}
+            href={serviceUrl(service)}
+            aria-label={`${service.title} – learn more`}
             className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-4 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl hover:shadow-blue-100/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           >
             <span className="text-blue-600 [&>svg]:h-6 [&>svg]:w-6 sm:[&>svg]:h-7 sm:[&>svg]:w-7">

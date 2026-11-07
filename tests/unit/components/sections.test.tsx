@@ -6,6 +6,7 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 import PageFooter, { SOCIAL_LINKS } from "@/components/PageFooter";
 import { allMenuItems } from "@/components/PageHeader";
 import { CONTACT_PAGE_URL } from "@/components/ContactUsBtn";
+import { SERVICES } from "@/components/services";
 
 describe("OurExpertise", () => {
   it("lists every technology, including AI", () => {
@@ -25,14 +26,16 @@ describe("OurExpertise", () => {
 });
 
 describe("WhatWeDo", () => {
-  it("shows the six services, each linking to the contact page", () => {
+  it("shows the six services, each linking to its own page", () => {
     render(<WhatWeDo />);
     expect(
       screen.getByRole("heading", { name: "End-to-End Digital Solutions" })
     ).toBeInTheDocument();
     const links = screen.getAllByRole("link");
     expect(links).toHaveLength(6);
-    links.forEach((link) => expect(link).toHaveAttribute("href", CONTACT_PAGE_URL));
+    expect(links.map((l) => l.getAttribute("href"))).toEqual(
+      SERVICES.map((s) => `/services/${s.slug}`)
+    );
     expect(links.map((l) => within(l).getByRole("heading").textContent)).toEqual([
       "Web Development",
       "eCommerce Solutions",
@@ -95,13 +98,16 @@ describe("Partners", () => {
 });
 
 describe("PageFooter", () => {
-  it("has social links, quick links and a contact button, but no Our Work column", () => {
+  it("has social links, services, quick links and a contact button, but no Our Work column", () => {
     render(<PageFooter />);
     SOCIAL_LINKS.forEach((s) => {
       expect(screen.getByRole("link", { name: s.label })).toHaveAttribute("href", s.url);
     });
     const headings = screen.getAllByRole("heading").map((h) => h.textContent);
-    expect(headings).toEqual(["Quick Links", "Contact"]);
+    expect(headings).toEqual(["Services", "Quick Links", "Contact"]);
+    SERVICES.forEach((s) => {
+      expect(screen.getByRole("link", { name: s.title })).toHaveAttribute("href", `/services/${s.slug}`);
+    });
     allMenuItems.forEach((item) => {
       expect(screen.getByRole("link", { name: item.label })).toHaveAttribute(
         "href",

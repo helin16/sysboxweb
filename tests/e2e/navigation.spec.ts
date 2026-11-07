@@ -114,8 +114,9 @@ test("logo returns to the home page", async ({ page }) => {
   await expect(page).toHaveURL(/\/$/);
 });
 
-test("service cards link to the contact page", async ({ page }) => {
+test("service cards open each service's own page", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("link", { name: /Custom Software/ }).click();
-  await expect(page).toHaveURL(/\/contact$/);
+  await page.locator("#services").getByRole("link", { name: /Custom Software/ }).click();
+  await expect(page).toHaveURL(/\/services\/custom-software$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Custom Software");
 });

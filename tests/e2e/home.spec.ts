@@ -93,10 +93,11 @@ test("partner cards link to each partner in a new tab", async ({ page }) => {
   await expect(links.nth(2)).toHaveAttribute("href", "https://aws.amazon.com/");
 });
 
-test("footer has Quick Links and Contact, without an Our Work column", async ({ page }) => {
+test("footer has Services, Quick Links and Contact, without an Our Work column", async ({ page }) => {
   await page.goto("/");
   const footer = page.getByRole("contentinfo");
-  await expect(footer.getByRole("heading")).toHaveText(["Quick Links", "Contact"]);
+  await expect(footer.getByRole("heading")).toHaveText(["Services", "Quick Links", "Contact"]);
+  await expect(footer.getByRole("link", { name: "eCommerce Solutions" })).toHaveAttribute("href", "/services/ecommerce");
   await expect(footer.getByRole("link", { name: "Facebook" })).toHaveAttribute("href", "https://www.facebook.com/sysboxteam/");
   await expect(footer.getByRole("link", { name: "LinkedIn" })).toHaveAttribute("href", "https://au.linkedin.com/company/sysbox");
   await expect(footer).toContainText("© Copyright Sysbox Pty Ltd");
