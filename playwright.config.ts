@@ -1,8 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
 // End-to-end tests: run the real site in a real browser.
-// Locally they reuse a dev server already running on port 3000; on CI (or if
-// nothing is running) Playwright starts one itself.
+// Locally they reuse a dev server already running on port 3000 (or start one).
+// On CI they test a production build, the same as what Vercel serves.
 const PORT = Number(process.env.E2E_PORT || 3000);
 const baseURL = process.env.E2E_BASE_URL || `http://localhost:${PORT}`;
 
@@ -33,7 +33,9 @@ export default defineConfig({
   webServer: process.env.E2E_BASE_URL
     ? undefined
     : {
-        command: `npx next dev -p ${PORT}`,
+        command: process.env.CI
+          ? `npx next build && npx next start -p ${PORT}`
+          : `npx next dev -p ${PORT}`,
         url: baseURL,
         reuseExistingServer: !process.env.CI,
         timeout: 180_000,
