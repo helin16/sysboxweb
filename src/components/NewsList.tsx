@@ -151,7 +151,7 @@ const NewsList = ({ noOfItems = 3 }: iNewsList) => {
   const [data, setData] = useState<iList<iNewsItem> | null>(null);
 
   useEffect(() => {
-    setIsLoading(true);
+    // isLoading starts as true, so there's no need to set it here.
     axios
       .get<iList<iNewsItem>>("https://i.showmine66.com/item", {
         params: {

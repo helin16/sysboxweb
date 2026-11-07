@@ -32,7 +32,8 @@ describe("PageLayout", () => {
         <p>page body</p>
       </PageLayout>
     );
-    const head = screen.getByTestId("head");
+    // React 19 moves <title>, <meta> and <link> into document.head itself.
+    const head = document;
     expect(head.querySelector("title")).toHaveTextContent("My title");
     expect(head.querySelector('meta[name="description"]')).toHaveAttribute("content", "My description");
     expect(screen.getByRole("banner")).toBeInTheDocument();
@@ -47,7 +48,8 @@ describe("PageLayout", () => {
         x
       </PageLayout>
     );
-    const head = screen.getByTestId("head");
+    // React 19 moves <title>, <meta> and <link> into document.head itself.
+    const head = document;
     const meta = (attr: string, key: string) =>
       head.querySelector(`meta[${attr}="${key}"]`)?.getAttribute("content");
     expect(head.querySelector('link[rel="canonical"]')).toHaveAttribute("href", "https://sysbox.com.au/contact");
@@ -66,7 +68,8 @@ describe("PageLayout", () => {
 
   it("falls back to the site-wide title and description", () => {
     render(<PageLayout>x</PageLayout>);
-    const head = screen.getByTestId("head");
+    // React 19 moves <title>, <meta> and <link> into document.head itself.
+    const head = document;
     expect(head.querySelector("title")).toHaveTextContent(
       "Sysbox Digital | Websites, Custom Software & eCommerce"
     );
@@ -93,7 +96,8 @@ describe("Home page", () => {
   it("describes the business to search engines", async () => {
     render(<HomePage />);
     await screen.findByRole("region", { name: "Google reviews" });
-    const head = screen.getByTestId("head");
+    // React 19 moves <title>, <meta> and <link> into document.head itself.
+    const head = document;
     expect(head.querySelector("title")).toHaveTextContent(/^Sysbox Digital \| Websites/);
     const ld = JSON.parse(head.querySelector('script[type="application/ld+json"]')!.innerHTML);
     expect(ld["@graph"].map((n: any) => n["@type"])).toEqual(["Organization", "WebSite"]);
@@ -136,7 +140,8 @@ describe("Contact page", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Let’s Talk About Your Project");
     expect(screen.getByRole("heading", { name: "Send us a message" })).toBeInTheDocument();
     expect(container.querySelector("#hbform")).toBeInTheDocument();
-    const head = screen.getByTestId("head");
+    // React 19 moves <title>, <meta> and <link> into document.head itself.
+    const head = document;
     expect(head.querySelector("title")).toHaveTextContent("Contact Sysbox Digital | Let’s Talk About Your Project");
     expect(head.querySelector('link[rel="canonical"]')).toHaveAttribute("href", "https://sysbox.com.au/contact");
   });
