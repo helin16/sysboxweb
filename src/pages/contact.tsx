@@ -51,10 +51,11 @@ const CONTACT_ROUTES = [
 const ContactPage = () => {
   return (
     <PageLayout
-      pageTitle={"Contact us - Sysbox"}
+      pageTitle={"Contact Sysbox Digital | Let’s Talk About Your Project"}
       pageDescription={
-        "Get in touch with Sysbox about custom systems, websites and support."
+        "Get in touch with Sysbox about a new website, eCommerce store, custom business software or ongoing support. Send us a message and we’ll get back to you."
       }
+      path="/contact"
       currentPageName={PAGE_NAME_CONTACT_US}
     >
       <PageSection

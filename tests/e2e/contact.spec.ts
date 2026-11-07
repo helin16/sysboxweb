@@ -8,7 +8,7 @@ test.beforeEach(async ({ page }) => {
 test("has the heading, intro and contact links", async ({ page }) => {
   const errors = trackPageErrors(page);
   await page.goto("/contact");
-  await expect(page).toHaveTitle("Contact us - Sysbox");
+  await expect(page).toHaveTitle("Contact Sysbox Digital | Let’s Talk About Your Project");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Let’s Talk About Your Project");
   const main = page.getByRole("main");
   await expect(main.getByRole("link", { name: /Find us on Google Maps/ })).toHaveAttribute(

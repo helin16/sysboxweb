@@ -16,8 +16,8 @@ jest.mock("next/document", () => ({
 describe("Document", () => {
   const html = renderToStaticMarkup(<Document />);
 
-  it("declares English", () => {
-    expect(html).toContain('<html lang="en">');
+  it("declares Australian English", () => {
+    expect(html).toContain('<html lang="en-AU">');
   });
 
   it("links every favicon size", () => {

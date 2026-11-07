@@ -19,6 +19,7 @@ import WhatWeDo from "@/components/WhatWeDo";
 import NewsList from "@/components/NewsList";
 import OurExpertise from "@/components/OurExpertise";
 import WhyChooseUs from "@/components/WhyChooseUs";
+import { organizationJsonLd } from "@/components/seo";
 
 /** Simple 24px line icons in the site's blue. */
 const Icon = ({ children }: { children: ReactNode }) => (
@@ -114,7 +115,7 @@ const ABOUT_POINTS = [
 
 const HomePage = () => {
   return (
-    <PageLayout pageTitle={"Sysbox - make your ideas shine since 2017"}>
+    <PageLayout path="/" jsonLd={organizationJsonLd()}>
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 via-white to-white">
         <div

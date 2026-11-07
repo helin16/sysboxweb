@@ -13,7 +13,7 @@ test.beforeEach(async ({ page }) => {
 test("loads cleanly with the right title and hero", async ({ page }) => {
   const errors = trackPageErrors(page);
   await page.goto("/");
-  await expect(page).toHaveTitle("Sysbox - make your ideas shine since 2017");
+  await expect(page).toHaveTitle("Sysbox Digital | Websites, Custom Software & eCommerce");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Make Your Ideas Shine");
   await expect(page.getByRole("region", { name: "Google reviews" })).toBeVisible();
   await expect(page.locator("#news").getByText("Read more").first()).toBeVisible();

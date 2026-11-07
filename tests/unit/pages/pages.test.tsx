@@ -41,6 +41,40 @@ describe("PageLayout", () => {
     expect(screen.getByRole("main").style.minHeight).toBe("calc(100vh - 18rem)");
   });
 
+  it("adds a canonical link, social preview tags and structured data", () => {
+    render(
+      <PageLayout pageTitle="T" pageDescription="D" path="/contact" jsonLd={{ "@type": "Thing", name: "</script>" }}>
+        x
+      </PageLayout>
+    );
+    const head = screen.getByTestId("head");
+    const meta = (attr: string, key: string) =>
+      head.querySelector(`meta[${attr}="${key}"]`)?.getAttribute("content");
+    expect(head.querySelector('link[rel="canonical"]')).toHaveAttribute("href", "https://sysbox.com.au/contact");
+    expect(meta("property", "og:url")).toBe("https://sysbox.com.au/contact");
+    expect(meta("property", "og:title")).toBe("T");
+    expect(meta("property", "og:description")).toBe("D");
+    expect(meta("property", "og:image")).toBe("https://sysbox.com.au/og-image.png");
+    expect(meta("property", "og:locale")).toBe("en_AU");
+    expect(meta("name", "twitter:card")).toBe("summary_large_image");
+    expect(meta("name", "robots")).toContain("index, follow");
+    const ld = head.querySelector('script[type="application/ld+json"]')!;
+    // "<" is escaped so the data can never close the script tag early.
+    expect(ld.innerHTML).not.toContain("</script>");
+    expect(JSON.parse(ld.innerHTML)).toEqual({ "@type": "Thing", name: "</script>" });
+  });
+
+  it("falls back to the site-wide title and description", () => {
+    render(<PageLayout>x</PageLayout>);
+    const head = screen.getByTestId("head");
+    expect(head.querySelector("title")).toHaveTextContent(
+      "Sysbox Digital | Websites, Custom Software & eCommerce"
+    );
+    expect(head.querySelector('meta[name="description"]')!.getAttribute("content")).toMatch(/^Sysbox builds/);
+    expect(head.querySelector('link[rel="canonical"]')).toHaveAttribute("href", "https://sysbox.com.au/");
+    expect(head.querySelector('script[type="application/ld+json"]')).toBeNull();
+  });
+
   it("can drop the minimum height", () => {
     render(<PageLayout withMinHeight={false}>x</PageLayout>);
     expect(screen.getByRole("main").style.minHeight).toBe("");
@@ -54,6 +88,15 @@ describe("Home page", () => {
     await screen.findAllByText("Read more");
     const ids = Array.from(container.querySelectorAll("main > [id]")).map((el) => el.id);
     expect(ids).toEqual(["about", "services", "our-work", "why-us", "testimonials", "news", "partners"]);
+  });
+
+  it("describes the business to search engines", async () => {
+    render(<HomePage />);
+    await screen.findByRole("region", { name: "Google reviews" });
+    const head = screen.getByTestId("head");
+    expect(head.querySelector("title")).toHaveTextContent(/^Sysbox Digital \| Websites/);
+    const ld = JSON.parse(head.querySelector('script[type="application/ld+json"]')!.innerHTML);
+    expect(ld["@graph"].map((n: any) => n["@type"])).toEqual(["Organization", "WebSite"]);
   });
 
   it("shows the hero heading, buttons and the four stats", async () => {
@@ -93,7 +136,9 @@ describe("Contact page", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Let’s Talk About Your Project");
     expect(screen.getByRole("heading", { name: "Send us a message" })).toBeInTheDocument();
     expect(container.querySelector("#hbform")).toBeInTheDocument();
-    expect(screen.getByTestId("head").querySelector("title")).toHaveTextContent("Contact us - Sysbox");
+    const head = screen.getByTestId("head");
+    expect(head.querySelector("title")).toHaveTextContent("Contact Sysbox Digital | Let’s Talk About Your Project");
+    expect(head.querySelector('link[rel="canonical"]')).toHaveAttribute("href", "https://sysbox.com.au/contact");
   });
 
   it("offers Google Maps, Facebook and LinkedIn but not Twitter", () => {
