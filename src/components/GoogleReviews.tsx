@@ -126,14 +126,18 @@ const ReviewCard = ({ review }: { review: iGoogleReview }) => (
       “{review.text}”
     </p>
     <div className="mt-6 pt-5 border-t border-slate-100 flex items-center gap-3 min-w-0">
-      <Image
-        src={review.profile_photo_url || ""}
-        alt=""
-        width={40}
-        height={40}
-        draggable={false}
-        className="rounded-full shrink-0"
-      />
+      {review.profile_photo_url ? (
+        <Image
+          src={review.profile_photo_url}
+          alt=""
+          width={40}
+          height={40}
+          draggable={false}
+          className="rounded-full shrink-0"
+        />
+      ) : (
+        <span aria-hidden="true" className="w-10 h-10 rounded-full shrink-0 bg-slate-200" />
+      )}
       <div className="min-w-0">
         <div className="font-semibold text-slate-900 truncate">
           {review.author_name}
